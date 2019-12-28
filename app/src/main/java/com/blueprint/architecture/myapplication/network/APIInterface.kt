@@ -15,6 +15,6 @@ interface APIInterface {
     @GET("movie/popular")
     fun getPopularMovies(@Query("page") pageNumber : Int): Call<PopularMoviesResponse?>?
 
-    @GET("/movie/{movie_id}")
+    @GET("movie/{movie_id}")
     fun getMovieDetails(@Path("movie_id") movieId : Int) : Call<MovieDetails>
 }
