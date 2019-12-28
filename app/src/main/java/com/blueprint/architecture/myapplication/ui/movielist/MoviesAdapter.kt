@@ -7,11 +7,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.bumptech.glide.Glide
 import com.blueprint.architecture.myapplication.R
 import com.blueprint.architecture.myapplication.model.popularMovies.MovieItem
 import com.blueprint.architecture.myapplication.network.ApiClient
 import com.blueprint.architecture.myapplication.ui.movielist.MoviesAdapter.MyViewHolder
+import com.bumptech.glide.Glide
 
 /**
  * Created by Wajid Ali
@@ -35,12 +35,14 @@ class MoviesAdapter(private val moviesList: List<MovieItem?>) : RecyclerView.Ada
         val movie = moviesList[position]
         holder.name.text = movie?.title
         holder.tvDesc.text = movie?.overview
-        Glide
-                .with(holder.ivMovieCover.context)
+
+        Glide.with(holder.ivMovieCover.context)
                 .load(ApiClient.IMAGES_BASE_PATH + movie?.posterPath)
                 .circleCrop()
-//                .placeholder(R.drawable.loading_spinner)
+                .placeholder(R.drawable.loading)
                 .into(holder.ivMovieCover)
+
+
     }
 
     override fun getItemCount(): Int {

@@ -2,6 +2,7 @@ package com.blueprint.architecture.myapplication
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.blueprint.architecture.myapplication.base.BaseFragment
 import com.blueprint.architecture.myapplication.ui.movielist.MovieListFragment.Companion.newInstance
 
 /**
@@ -12,9 +13,21 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.movie_list_activity)
         if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                    .replace(R.id.container, newInstance())
-                    .commitNow()
+            redirectToPopularMovies()
         }
+    }
+
+    private fun redirectToMovieDetails(movieId : Int){
+
+    }
+
+    private fun redirectToPopularMovies(){
+        loadFragment(newInstance())
+    }
+
+    fun loadFragment(fragment : BaseFragment){
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.container, fragment)
+                .commitNow()
     }
 }

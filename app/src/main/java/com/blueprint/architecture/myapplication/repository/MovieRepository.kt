@@ -15,21 +15,22 @@ class MovieRepository {
     private var apiInterface: APIInterface? = null
 
     fun getPopularMovies(pageNumber: Int): MutableLiveData<PopularMoviesResponse?> {
-        val refferAndInvitePojoMutableLiveData = MutableLiveData<PopularMoviesResponse?>()
+        val popularMoviesLiveData = MutableLiveData<PopularMoviesResponse?>()
         apiInterface = clientAuthentication?.create(APIInterface::class.java)
         val call = apiInterface?.getPopularMovies(pageNumber)
         call!!.enqueue(object : Callback<PopularMoviesResponse?> {
             override fun onResponse(call: Call<PopularMoviesResponse?>, response: Response<PopularMoviesResponse?>) {
                 if (response.body() != null) {
-                    refferAndInvitePojoMutableLiveData.value = response.body()
+                    popularMoviesLiveData.value = response.body()
                 }
             }
 
             override fun onFailure(call: Call<PopularMoviesResponse?>, t: Throwable) {
                 t.printStackTrace()
+                popularMoviesLiveData.value = null
             }
         })
-        return refferAndInvitePojoMutableLiveData
+        return popularMoviesLiveData
     }
 
 }
