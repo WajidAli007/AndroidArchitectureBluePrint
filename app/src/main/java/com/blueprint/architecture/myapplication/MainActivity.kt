@@ -3,7 +3,8 @@ package com.blueprint.architecture.myapplication
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.blueprint.architecture.myapplication.base.BaseFragment
-import com.blueprint.architecture.myapplication.ui.movielist.MovieListFragment.Companion.newInstance
+import com.blueprint.architecture.myapplication.ui.movieDetails.MovieDetailsFragment
+import com.blueprint.architecture.myapplication.ui.movielist.MovieListFragment
 
 /**
  * Created by Wajid Ali
@@ -17,15 +18,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun redirectToMovieDetails(movieId : Int){
-
+    fun redirectToMovieDetails(movieId : Int){
+        loadFragment(MovieDetailsFragment.newInstance(movieId))
     }
 
     private fun redirectToPopularMovies(){
-        loadFragment(newInstance())
+        loadFragment(MovieListFragment.newInstance())
     }
 
-    fun loadFragment(fragment : BaseFragment){
+    private fun loadFragment(fragment : BaseFragment){
         supportFragmentManager.beginTransaction()
                 .replace(R.id.container, fragment)
                 .commitNow()

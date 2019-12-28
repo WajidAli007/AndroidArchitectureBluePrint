@@ -16,7 +16,8 @@ import com.bumptech.glide.Glide
 /**
  * Created by Wajid Ali
  */
-class MoviesAdapter(private val moviesList: List<MovieItem?>) : RecyclerView.Adapter<MyViewHolder>() {
+class MoviesAdapter(private val moviesList: List<MovieItem?>,
+                    private val callback : MovieInteractionCallback?) : RecyclerView.Adapter<MyViewHolder>() {
 
     inner class MyViewHolder(view: View) : ViewHolder(view) {
         var name: TextView = view.findViewById<View>(R.id.name) as TextView
@@ -42,6 +43,11 @@ class MoviesAdapter(private val moviesList: List<MovieItem?>) : RecyclerView.Ada
                 .placeholder(R.drawable.loading)
                 .into(holder.ivMovieCover)
 
+        holder.itemView.setOnClickListener {
+            if (movie?.id != null) {
+                callback?.onMovieClicked(movie.id.toInt())
+            }
+        }
 
     }
 

@@ -2,10 +2,12 @@ package com.blueprint.architecture.myapplication.ui.movielist
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.blueprint.architecture.myapplication.MainActivity
 import com.blueprint.architecture.myapplication.R
 import com.blueprint.architecture.myapplication.base.BaseFragment
 import com.blueprint.architecture.myapplication.model.popularMovies.MovieItem
@@ -15,7 +17,7 @@ import kotlinx.android.synthetic.main.movie_list_fragment.*
 /**
  * Created by Wajid Ali
  */
-class MovieListFragment : BaseFragment(R.layout.movie_list_fragment) {
+class MovieListFragment : BaseFragment(R.layout.movie_list_fragment), MovieInteractionCallback {
 
     companion object {
         fun newInstance() =
@@ -35,7 +37,7 @@ class MovieListFragment : BaseFragment(R.layout.movie_list_fragment) {
                 .load(R.drawable.loading)
                 .into(ivLoadingPopularMovies)
 
-        mAdapter = MoviesAdapter(movieList)
+        mAdapter = MoviesAdapter(movieList, this)
         val mLayoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
         rvMoviesListPopular?.layoutManager = mLayoutManager
         rvMoviesListPopular?.adapter = mAdapter
@@ -45,11 +47,21 @@ class MovieListFragment : BaseFragment(R.layout.movie_list_fragment) {
         super.onActivityCreated(savedInstanceState)
         mViewModel = ViewModelProvider(this).get(MovieListViewModel::class.java)
         mViewModel?.movies?.observe(MovieListFragment@ this, Observer { movieModels ->
-            movieList.addAll(movieModels ?: ArrayList())
+            if(movieModels == null){
+                Toast.makeText(this.context, "Error Occurred", Toast.LENGTH_SHORT).show()
+                return@Observer
+            }
+            movieList.addAll(movieModels)
             if(movieList.isNotEmpty())
                 ivLoadingPopularMovies.visibility = View.GONE
             mAdapter?.notifyDataSetChanged()
         })
         mViewModel?.getPopularMovies()
+    }
+
+    override fun onMovieClicked(movieId: Int) {
+        if(activity is MainActivity){
+            (activity as MainActivity).redirectToMovieDetails(movieId)
+        }
     }
 }
